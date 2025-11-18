@@ -1,8 +1,11 @@
--- =============================================================================
---  OrzMiku's NeoVim Profile
---  NeoVim 入口文件
--- =============================================================================
+-- [[基础设置]]
+require 'config.options'
 
-require("config.options")
-require("config.keymaps")
-require("config.lazy")
+-- [[ 基本键位映射 ]]
+require 'config.keymaps'
+
+-- [[ 基本自动命令 ]]
+require 'config.autocmds'
+
+-- [[ lazy.nvim 插件管理器 ]]
+require 'config.lazy'

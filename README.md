@@ -1,12 +1,13 @@
 ## OrzMiku's NeoVim Profile
 
-Install: 
+For Windows (PowerShell): 
 
 ```bash
-# For Windows (Powershell)
 git clone https://github.com/OrzMiku/nvim-profile $env:LOCALAPPDATA\nvim
+```
 
-# For Linux
+For Linux: 
+```bash
 git clone https://github.com/OrzMiku/nvim-profile ~/.config/nvim
 ```
 

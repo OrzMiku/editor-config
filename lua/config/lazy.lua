@@ -1,45 +1,35 @@
--- =============================================================================
---  LAZY.NVIM
--- =============================================================================
-
--- -----------------------------------------------------------------------------
---  安装 lazy.nvim
--- -----------------------------------------------------------------------------
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://gh-proxy.com/https://github.com/folke/lazy.nvim.git",
-    "--branch=stable",
-    lazypath,
-  })
+-- [[ 安装 lazy.nvim ]]
+local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
+  local out = vim.fn.system { 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath }
+  if vim.v.shell_error ~= 0 then
+    error('克隆 lazy.nvim 时出错：\n' .. out)
+  end
 end
-vim.opt.rtp:prepend(lazypath)
 
--- -----------------------------------------------------------------------------
---  lazy.nvim 初始化
--- -----------------------------------------------------------------------------
-require("lazy").setup({
-  spec = {
-    { import = "plugins" },
+---@type vim.Option
+local rtp = vim.opt.rtp
+rtp:prepend(lazypath)
+
+-- [[ 配置和安装插件 ]]
+-- lazy.nvim 会自动加载 lua/plugins/ 目录下的所有模块
+require('lazy').setup('plugins', {
+  ui = {
+    icons = vim.g.have_nerd_font and {} or {
+      cmd = '⌘',
+      config = '🛠',
+      event = '📅',
+      ft = '📂',
+      init = '⚙',
+      keys = '🗝',
+      plugin = '🔌',
+      runtime = '💻',
+      require = '🌙',
+      source = '📄',
+      start = '🚀',
+      task = '📌',
+      lazy = '💤 ',
+    },
   },
-  git = {
-    -- Github 加速
-    url_format = "https://gh-proxy.com/https://github.com/%s.git"
-  },
-  checker = { enable = true },
 })
-
--- -----------------------------------------------------------------------------
---  加载颜色主题 (ref: plugins/colorscheme.lua)
--- -----------------------------------------------------------------------------
-local colorscheme = "tokyonight"
--- local colorscheme = "onedark"
-
-local ok, _err = pcall(vim.cmd, "colorscheme " .. colorscheme)
-
-if not ok then
-  vim.notify('colorscheme "' .. colorscheme .. '" not found!')
-end
